@@ -1,15 +1,18 @@
-import 'package:flutter/cupertino.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:employee_managment_project/presentation/app.dart';
+import 'package:flutter/material.dart';
 
-void main () {
-  return runApp(MyApp());
-}
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+void main() async {
+  await EasyLocalization.ensureInitialized();
 
-  @override
-  Widget build(BuildContext context) {
-    return const Placeholder(
-    );
-  }
+  runApp(
+    EasyLocalization(
+      supportedLocales: const [Locale('en'),Locale('ru')] ,
+      startLocale: const Locale('en'),
+      path: 'assets/translations',
+      fallbackLocale: const Locale('en'),
+      child: App(),
+    ),
+  );
 }
