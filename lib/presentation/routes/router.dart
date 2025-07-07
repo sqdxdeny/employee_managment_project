@@ -5,11 +5,8 @@ export 'package:auto_route/auto_route.dart';
 
 part 'router.gr.dart';
 
-
 @AutoRouterConfig()
 class AppRouter extends RootStackRouter {
-
-
   AppRouter();
 
   @override
@@ -17,6 +14,6 @@ class AppRouter extends RootStackRouter {
 
   @override
   List<AutoRoute> get routes => [
-
+    CustomRoute(page: AuthorizationRoute.page, path: '/'),
   ];
 }

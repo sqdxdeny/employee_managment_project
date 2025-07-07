@@ -1,4 +1,3 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:employee_managment_project/presentation/routes/router.dart';
 import 'package:flutter/material.dart';
