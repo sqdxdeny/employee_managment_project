@@ -4,7 +4,9 @@
 
 abstract class  LocaleKeys {
   static const authorization__title = 'authorization_.title';
+  static const authorization__login_ = 'authorization_.login_';
+  static const authorization__password_ = 'authorization_.password_';
   static const authorization_ = 'authorization_';
-  static const test = 'test';
+  static const continue_ = 'continue_';
 
 }

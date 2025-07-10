@@ -1,6 +1,8 @@
 {
   "authorization_" : {
-    "title" : "authorization screen"
+    "title" : "Welcome!",
+    "login_" : "Login",
+    "password_" : "Password"
   },
-  "test" : "test button"
+  "continue_" : "Continue"
 }
