@@ -4,5 +4,9 @@
     "login_" : "Login",
     "password_" : "Password"
   },
-  "continue_" : "Continue"
+  "continue_" : "Continue",
+
+  "home_screen" : {
+   "title" : "Home"
+  }
 }

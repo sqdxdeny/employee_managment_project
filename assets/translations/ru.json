@@ -4,6 +4,10 @@
     "login_" : "Логин",
     "password_" : "Пароль"
   },
-  "continue_" : "Продолжить"
+  "continue_" : "Продолжить",
+
+  "home_screen" : {
+    "title" : "Главная"
+  }
 }
 

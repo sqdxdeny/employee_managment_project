@@ -8,5 +8,7 @@ abstract class  LocaleKeys {
   static const authorization__password_ = 'authorization_.password_';
   static const authorization_ = 'authorization_';
   static const continue_ = 'continue_';
+  static const home_screen_title = 'home_screen.title';
+  static const home_screen = 'home_screen';
 
 }

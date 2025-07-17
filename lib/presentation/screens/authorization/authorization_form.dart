@@ -3,7 +3,8 @@ part of 'authorization_screen.dart';
 class AuthorizationForm extends StatelessWidget {
   const AuthorizationForm({super.key});
 
-  Widget _loginBar(BuildContext context) { /// ПОЛЕ С ЛОГИНОМ
+  Widget _loginBar(BuildContext context) {
+    /// ПОЛЕ С ЛОГИНОМ
     return TextFormField(
       decoration: InputDecoration(
         labelText: LocaleKeys.authorization__login_.tr(),
@@ -16,7 +17,8 @@ class AuthorizationForm extends StatelessWidget {
     );
   }
 
-  Widget _passwordBar(BuildContext context) { /// ПОЛЕ С ПАРОЛЕМ
+  Widget _passwordBar(BuildContext context) {
+    /// ПОЛЕ С ПАРОЛЕМ
     return TextFormField(
       decoration: InputDecoration(
         labelText: LocaleKeys.authorization__password_.tr(),
@@ -29,13 +31,18 @@ class AuthorizationForm extends StatelessWidget {
     );
   }
 
-  Widget _buttonContinue() { /// КНОПКА ПРОДОЛЖИТь
+  /// КНОПКА ПРОДОЛЖИТь
+  Widget _buttonContinue() {
     return BlocBuilder<AuthorizationBloc, AuthorizationState>(
       buildWhen: (p, c) => p.login != c.login || p.password != c.password,
 
       builder: (context, state) {
-        if ((state.login?.isEmpty ?? true) ||
-            (state.password?.isEmpty ?? true)) {
+        final login = state.login;
+        final password = state.password;
+        if (login == null ||
+            login.isEmpty ||
+            password == null ||
+            password.isEmpty) {
           return const SizedBox();
         } else {
           return ElevatedButton(
@@ -49,8 +56,8 @@ class AuthorizationForm extends StatelessWidget {
     );
   }
 
-  Widget _bodyPadding(BuildContext context) { /// Тело
-    /// Поле логина и пароля
+  //LOGIN AND PASSWORD // BODY //
+  Widget _bodyPadding(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(
@@ -63,7 +70,7 @@ class AuthorizationForm extends StatelessWidget {
       ),
     );
   }
-
+  
   Widget _languageButton(BuildContext context) {
     return IconButton(
       icon: Icon(Icons.language_outlined),
@@ -97,28 +104,29 @@ class AuthorizationForm extends StatelessWidget {
     );
   }
 
+  Widget get _appBarBackground {
+    return Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [Color(0xFF6507FF), Color(0xFF9008D2), Color(0xFF6507FF)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+      ),
+    );
+  }
+
   PreferredSizeWidget _appBar(BuildContext context) {
     return AppBar(
       centerTitle: true,
-      flexibleSpace: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Color(0xFF6507FF), Color(0xFF9008D2), Color(0xFF6507FF)],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-        ),
-      ),
+      flexibleSpace: _appBarBackground,
       leading: _languageButton(context),
       bottom: _appBarBottom(context),
     );
-}
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: _appBar(context),
-      body: _bodyPadding(context),
-    );
+    return Scaffold(appBar: _appBar(context), body: _bodyPadding(context));
   }
 }
