@@ -25,7 +25,7 @@ class _HomeFormState extends State<HomeForm> {
         flexibleSpace: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
-              colors: [Color(0xFF6507FF), Color(0xFF9008D2), Color(0xFF6507FF)],
+              colors: [Color(0xFF12345E), Color(0xFFE5897B), Color(0xFF12345E)],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
@@ -41,8 +41,21 @@ class _HomeFormState extends State<HomeForm> {
         ),
         leading: null,
         actions: [
-          IconButton(onPressed: () {}, icon: Icon(Icons.add_alert_rounded),
-          ),
+          IconButton(onPressed: () {}, icon: Icon(Icons.add_alert_rounded)),
+          IconButton(onPressed: () {
+            context.router.navigate(ProfileRoute());
+          }, icon: Icon(Icons.person)),
+          // BlocBuilder<ProfileBloc, ProfileState>(
+          //   builder: (context, state) {
+          //     return CircleAvatar(
+          //       radius: 60,
+          //       backgroundImage:
+          //           state.image != null ? FileImage(File(state.image!)) : null,
+          //       child:
+          //           state.image == null ? Icon(Icons.person, size: 60) : null,
+          //     );
+          //   },
+          // ),
         ],
       ),
       body: Center(child: _widgetOptions.elementAt(_selectedIndex)),

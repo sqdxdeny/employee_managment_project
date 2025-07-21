@@ -70,7 +70,7 @@ class AuthorizationForm extends StatelessWidget {
       ),
     );
   }
-  
+
   Widget _languageButton(BuildContext context) {
     return IconButton(
       icon: Icon(Icons.language_outlined),
@@ -108,7 +108,7 @@ class AuthorizationForm extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: [Color(0xFF6507FF), Color(0xFF9008D2), Color(0xFF6507FF)],
+          colors: [Color(0xFF12345E), Color(0xFFE5897B), Color(0xFF12345E)],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),

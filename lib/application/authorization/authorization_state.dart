@@ -4,15 +4,9 @@ class AuthorizationState with EquatableMixin {
   final String? login;
   final String? password;
 
-  const AuthorizationState ({
-    this.login,
-    this.password,
-});
+  const AuthorizationState({this.login, this.password});
 
-  AuthorizationState copyWith({
-    String? login,
-    String? password,
-}) {
+  AuthorizationState copyWith({String? login, String? password}) {
     return AuthorizationState(
       login: login ?? this.login,
       password: password ?? this.password,
@@ -20,8 +14,5 @@ class AuthorizationState with EquatableMixin {
   }
 
   @override
-  List<Object?> get props => [
-    login,
-    password,
-  ];
+  List<Object?> get props => [login, password];
 }

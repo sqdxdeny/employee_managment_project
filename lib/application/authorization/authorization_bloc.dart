@@ -10,15 +10,17 @@ class AuthorizationBloc extends Bloc<AuthorizationEvent, AuthorizationState> {
     on<_UpdatePassword>(_updatePassword);
   }
 
-  Future<void> _updateLogin(_UpdateLogin event, Emitter<AuthorizationState> emit) async {
-    emit(state.copyWith(
-      login: event.login,
-    ));
+  Future<void> _updateLogin(
+    _UpdateLogin event,
+    Emitter<AuthorizationState> emit,
+  ) async {
+    emit(state.copyWith(login: event.login));
   }
 
-  Future<void> _updatePassword(_UpdatePassword event, Emitter<AuthorizationState> emit) async {
-    emit(state.copyWith(
-      password: event.password,
-    ));
+  Future<void> _updatePassword(
+    _UpdatePassword event,
+    Emitter<AuthorizationState> emit,
+  ) async {
+    emit(state.copyWith(password: event.password));
   }
 }
