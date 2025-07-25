@@ -59,7 +59,7 @@ class AuthorizationForm extends StatelessWidget {
   //LOGIN AND PASSWORD // BODY //
   Widget _bodyPadding(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(16.0),
+      padding: EdgeInsets.all(75),
       child: Column(
         spacing: 20,
         children: [
@@ -85,48 +85,42 @@ class AuthorizationForm extends StatelessWidget {
     );
   }
 
-  PreferredSizeWidget _appBarBottom(BuildContext context) {
-    return PreferredSize(
-      preferredSize: Size.fromHeight(110),
-      child: Container(
-        height: 110,
-        child: Center(
-          child: Text(
-            LocaleKeys.authorization__title.tr(),
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 25,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget get _appBarBackground {
-    return Container(
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [Color(0xFF12345E), Color(0xFFE5897B), Color(0xFF12345E)],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-      ),
-    );
-  }
-
   PreferredSizeWidget _appBar(BuildContext context) {
     return AppBar(
+      title: Text(
+        LocaleKeys.authorization__title.tr(),
+        style: TextStyle(
+          color: Colors.white,
+          fontSize: 25,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+      backgroundColor: Colors.transparent,
+      elevation: 0,
       centerTitle: true,
-      flexibleSpace: _appBarBackground,
       leading: _languageButton(context),
-      bottom: _appBarBottom(context),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(appBar: _appBar(context), body: _bodyPadding(context));
+    return Scaffold(
+      extendBodyBehindAppBar: true,
+      appBar: _appBar(context),
+
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Color(0xFF12345E), Color(0xFFE5897B), Color(0xFF12345E)],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+        ),
+        width: double.infinity,
+        height: double.infinity,
+        child:
+        _bodyPadding(context),
+      ),
+    );
   }
 }
