@@ -31,7 +31,7 @@ class _ProfileFormState extends State<ProfileForm> {
         ),
         width: double.infinity,
         height: double.infinity,
-        child: BlocBuilder<ProfileBloc, ProfileState>(
+        child: BlocBuilder<ProfileEditorBloc, ProfileEditorState>(
           builder: (context, state) {
             return Padding(
               padding: EdgeInsets.all(75),
@@ -45,8 +45,8 @@ class _ProfileFormState extends State<ProfileForm> {
                         source: ImageSource.gallery,
                       );
                       if (pickedFile != null) {
-                        context.read<ProfileBloc>().add(
-                          ProfileEvent.changeImage(pickedFile.path),
+                        context.read<ProfileEditorBloc>().add(
+                          ProfileEditorEvent.changeImage(pickedFile.path),
                         );
                       }
                     },

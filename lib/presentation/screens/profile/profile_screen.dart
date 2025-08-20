@@ -19,7 +19,7 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
 
       return BlocProvider(
-        create: (context) => ProfileBloc(ProfileState()),
+        create: (context) => ProfileEdBloc(ProfileState()),
         child: const ProfileForm(),
       );
   }
