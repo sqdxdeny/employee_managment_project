@@ -34,24 +34,30 @@ class AuthorizationForm extends StatelessWidget {
   /// КНОПКА ПРОДОЛЖИТь
   Widget _buttonContinue() {
     return BlocBuilder<AuthorizationBloc, AuthorizationState>(
-      buildWhen: (p, c) => p.login != c.login || p.password != c.password,
-
+      buildWhen:
+          (p, c) =>
+              p.enableAuth != c.enableAuth ||
+              p.enableNavigate != c.enableNavigate,
       builder: (context, state) {
-        final login = state.login;
-        final password = state.password;
-        if (login == null ||
-            login.isEmpty ||
-            password == null ||
-            password.isEmpty) {
+        if (!state.enableAuth) {
           return const SizedBox();
-        } else {
-          return ElevatedButton(
-            onPressed: () {
-              context.router.navigate(HomeRoute());
-            },
-            child: Text(LocaleKeys.continue_.tr()),
-          );
         }
+
+        return ElevatedButton(
+          onPressed: () {
+            final bloc = context.read<AuthorizationBloc>();
+            final enableNavigate = state.enableNavigate;
+            if (enableNavigate) {
+              context.router.navigate(HomeRoute());
+              bloc.add(AuthorizationEvent.authorize());
+            } else {
+              final sm = ScaffoldMessenger.of(context);
+              final SnackBar text = SnackBar(content: Text ('Login or pasword isn\'t valid'));
+              sm.showSnackBar(text);
+            }
+          },
+          child: Text(LocaleKeys.continue_.tr()),
+        );
       },
     );
   }
@@ -118,8 +124,7 @@ class AuthorizationForm extends StatelessWidget {
         ),
         width: double.infinity,
         height: double.infinity,
-        child:
-        _bodyPadding(context),
+        child: _bodyPadding(context),
       ),
     );
   }
