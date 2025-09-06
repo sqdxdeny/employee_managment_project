@@ -11,7 +11,6 @@ sealed class AuthorizationEvent {
   const factory AuthorizationEvent.authorize() = _Authorize;
 
   const factory AuthorizationEvent.refresh(Profile profile) = _Refresh;
-
 }
 
 class _UpdateLogin extends AuthorizationEvent {
@@ -32,5 +31,6 @@ class _Authorize extends AuthorizationEvent {
 
 class _Refresh extends AuthorizationEvent {
   final Profile profile;
+
   const _Refresh(this.profile);
 }

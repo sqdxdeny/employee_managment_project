@@ -7,12 +7,12 @@ sealed class ProfileEditorEvent {
 
   const factory ProfileEditorEvent.changeLogin(String login) = _ChangeLogin;
 
-  const factory ProfileEditorEvent.changePassword(String password) = _ChangePassword;
+  const factory ProfileEditorEvent.changePassword(String password) =
+      _ChangePassword;
 
   const factory ProfileEditorEvent.save() = _Save;
 
   const factory ProfileEditorEvent.refresh(Profile profile) = _Refresh;
-
 }
 
 class _ChangeImage extends ProfileEditorEvent {

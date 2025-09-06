@@ -43,6 +43,22 @@ class HomeRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
+/// [NavigationBarScreen]
+class NavigationBarRoute extends PageRouteInfo<void> {
+  const NavigationBarRoute({List<PageRouteInfo>? children})
+    : super(NavigationBarRoute.name, initialChildren: children);
+
+  static const String name = 'NavigationBarRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const NavigationBarScreen();
+    },
+  );
+}
+
+/// generated route for
 /// [ProfileScreen]
 class ProfileRoute extends PageRouteInfo<void> {
   const ProfileRoute({List<PageRouteInfo>? children})
@@ -54,6 +70,38 @@ class ProfileRoute extends PageRouteInfo<void> {
     name,
     builder: (data) {
       return const ProfileScreen();
+    },
+  );
+}
+
+/// generated route for
+/// [RequestsScreen]
+class RequestsRoute extends PageRouteInfo<void> {
+  const RequestsRoute({List<PageRouteInfo>? children})
+    : super(RequestsRoute.name, initialChildren: children);
+
+  static const String name = 'RequestsRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const RequestsScreen();
+    },
+  );
+}
+
+/// generated route for
+/// [TasksScreen]
+class TasksRoute extends PageRouteInfo<void> {
+  const TasksRoute({List<PageRouteInfo>? children})
+    : super(TasksRoute.name, initialChildren: children);
+
+  static const String name = 'TasksRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const TasksScreen();
     },
   );
 }

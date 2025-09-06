@@ -47,7 +47,11 @@ extension ProfileEditorStateX on ProfileEditorState {
   bool get enableSave {
     final login = this.login;
     final password = this.password;
-    final res = login != null && login.isNotEmpty && password != null && password.isNotEmpty;
+    final res =
+        login != null &&
+        login.isNotEmpty &&
+        password != null &&
+        password.isNotEmpty;
     return res;
   }
 }

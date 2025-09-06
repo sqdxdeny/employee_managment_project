@@ -3,7 +3,8 @@ part of 'profile_watcher_bloc.dart';
 sealed class ProfileWatcherEvent {
   const ProfileWatcherEvent();
 
-  const factory ProfileWatcherEvent.updateProfile(Profile profile) = _UpdateProfile;
+  const factory ProfileWatcherEvent.updateProfile(Profile profile) =
+      _UpdateProfile;
 
   const factory ProfileWatcherEvent.authorize(Profile? profile) = _Authorize;
 

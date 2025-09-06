@@ -4,10 +4,32 @@
     "login_" : "Логин",
     "password_" : "Пароль"
   },
-  "continue_" : "Продолжить",
+  "continue_" : {
+    "sign_in" : "Войти"
+  },
 
   "home_screen" : {
     "title" : "Главная"
+  },
+
+  "tasks_screen" : {
+    "title": "Задачи",
+    "main_title" : "Задачи на сегодня:",
+    "button_task" : "Новая задача",
+    "button_filter" : "Фильтр",
+    "button_sort" : "Сорт.",
+    "button_all" : "Все задачи",
+    "button_open" : "В процессе",
+    "button_completed" : "Завершенные"
+  },
+
+  "requests_screen" : {
+    "title" : "Заявки"
+  },
+
+  "profile_screen" : {
+    "title" : "Профиль",
+    "button_save" : "Сохранить"
   }
 }
 

@@ -4,9 +4,32 @@
     "login_" : "Login",
     "password_" : "Password"
   },
-  "continue_" : "Continue",
+
+  "continue_" : {
+    "sign_in" : "Log In"
+  },
 
   "home_screen" : {
    "title" : "Home"
+  },
+
+  "tasks_screen" : {
+    "title": "Tasks",
+    "main_title" : "Today\\'s Task",
+    "button_task" : "New Task",
+    "button_filter" : "Filter",
+    "button_sort" : "Sort",
+    "button_all" : "All",
+    "button_open" : "Open",
+    "button_completed" : "Completed"
+  },
+
+  "requests_screen" : {
+    "title" : "Requests"
+  },
+
+  "profile_screen" : {
+    "title" : "Profile",
+    "button_save" : "Save"
   }
 }

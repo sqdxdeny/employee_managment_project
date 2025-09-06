@@ -13,14 +13,15 @@ class AuthorizationBloc extends Bloc<AuthorizationEvent, AuthorizationState> {
 
   late StreamSubscription<ProfileWatcherState> _profileListener;
 
-  AuthorizationBloc(this._profileWatcherBloc) : super(AuthorizationState.initial(_profileWatcherBloc.state.profile)) {
+  AuthorizationBloc(this._profileWatcherBloc)
+    : super(AuthorizationState.initial(_profileWatcherBloc.state.profile)) {
     on<_UpdateLogin>(_updateLogin);
     on<_UpdatePassword>(_updatePassword);
     on<_Authorize>(_authorize);
     on<_Refresh>(_refresh);
 
     _profileListener = _profileWatcherBloc.stream.listen((updated) {
-      if(state.profile != updated.profile) {
+      if (state.profile != updated.profile) {
         add(AuthorizationEvent.refresh(updated.profile));
       }
     });
@@ -32,22 +33,33 @@ class AuthorizationBloc extends Bloc<AuthorizationEvent, AuthorizationState> {
     super.close();
   }
 
-  Future<void> _refresh(_Refresh event, Emitter<AuthorizationState> emit) async {
+  Future<void> _refresh(
+    _Refresh event,
+    Emitter<AuthorizationState> emit,
+  ) async {
     print('refresh: ${event.profile.toString()}');
     emit(AuthorizationState.initial(event.profile));
   }
 
-  Future<void> _updateLogin(_UpdateLogin event, Emitter<AuthorizationState> emit) async {
+  Future<void> _updateLogin(
+    _UpdateLogin event,
+    Emitter<AuthorizationState> emit,
+  ) async {
     emit(state.copyWith(login: event.login));
   }
 
-  Future<void> _updatePassword(_UpdatePassword event, Emitter<AuthorizationState> emit) async {
+  Future<void> _updatePassword(
+    _UpdatePassword event,
+    Emitter<AuthorizationState> emit,
+  ) async {
     emit(state.copyWith(password: event.password));
   }
 
-  Future<void> _authorize(_Authorize event, Emitter<AuthorizationState> emit) async {
+  Future<void> _authorize(
+    _Authorize event,
+    Emitter<AuthorizationState> emit,
+  ) async {
     final profile = state.validate ? null : state.profile;
     _profileWatcherBloc.add(ProfileWatcherEvent.authorize(profile));
   }
-
 }
