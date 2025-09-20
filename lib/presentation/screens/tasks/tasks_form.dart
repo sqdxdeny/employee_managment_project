@@ -28,6 +28,12 @@ class _TasksFormState extends State<TasksForm> {
     });
   }
 
+  @override
+  void dispose() {
+    _dateStreamController.close();
+    super.dispose();
+  }
+
   // вывод текущей даты
   Widget _dateStream(BuildContext context) {
     return StreamBuilder<DateTime>(

@@ -19,7 +19,7 @@ class TasksScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
+    return BlocProvider<TasksBloc>(
       create: (_) => TasksBloc(),
       child: const TasksForm(),
     );
