@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:employee_managment_project/application/profile_watcher/profile_watcher_bloc.dart';
 import 'package:employee_managment_project/domain/profile/profile.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'authorization_event.dart';
@@ -37,7 +38,6 @@ class AuthorizationBloc extends Bloc<AuthorizationEvent, AuthorizationState> {
     _Refresh event,
     Emitter<AuthorizationState> emit,
   ) async {
-    print('refresh: ${event.profile.toString()}');
     emit(AuthorizationState.initial(event.profile));
   }
 

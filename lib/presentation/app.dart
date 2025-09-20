@@ -16,6 +16,7 @@ class App extends StatelessWidget {
     return BlocProvider<ProfileWatcherBloc>(
       create: (_) => ProfileWatcherBloc(),
      child: MaterialApp.router(
+       debugShowCheckedModeBanner: false,
       routerDelegate: AutoRouterDelegate(_appRouter),
       routeInformationParser: _appRouter.defaultRouteParser(),
 

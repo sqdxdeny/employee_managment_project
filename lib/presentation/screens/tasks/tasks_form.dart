@@ -8,44 +8,46 @@ class TasksForm extends StatefulWidget {
 }
 
 class _TasksFormState extends State<TasksForm> {
-  final StreamController<DateTime> _dateStreamController =
-      StreamController<DateTime>.broadcast();
+  final StreamController<DateTime> _dateStreamController = StreamController<DateTime>.broadcast();
 
   @override
   void initState() {
     super.initState();
-    Timer.periodic(const Duration(days: 1), (timer) {
-      _dateStreamController.sink.add(DateTime.now());
+    Timer.periodic(const Duration(seconds: 1), (timer) async {
+      final now = DateTime.now();
+      final DateTime streamData;
+      try {
+        streamData = await _dateStreamController.stream.last;
+      } catch(_){
+        _dateStreamController.sink.add(now);
+        return;
+      }
+      if(now.day > streamData.day || now.month > streamData.month || now.year > streamData.year) {
+        _dateStreamController.sink.add(now);
+      }
     });
   }
 
+  // вывод текущей даты
   Widget _dateStream(BuildContext context) {
     return StreamBuilder<DateTime>(
       stream: _dateStreamController.stream,
       builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          final formattedDate = DateFormat(
-            'EEEE, d MMMM',
-          ).format(snapshot.data!);
-          return Text(
-            formattedDate,
-            style: const TextStyle(fontSize: 13, color: Colors.grey),
-          );
-        } else {
-          final initialDate = DateFormat('EEEE, d MMMM').format(DateTime.now());
-          return Text(
-            initialDate,
-            style: const TextStyle(fontSize: 13, color: Colors.grey),
-          );
-        }
+        final date = snapshot.data ?? DateTime.now();
+        final formattedDate = DateFormat('EEEE, d MMMM').format(date);
+        return Text(
+          formattedDate,
+          style: const TextStyle(fontSize: 13, color: Colors.grey),
+        );
       },
     );
   }
 
+  // 'Today's task' заголовок
   Widget _todayTask(BuildContext context) {
     return Text(
       LocaleKeys.tasks_screen_main_title.tr(),
-      style: TextStyle(
+      style: const TextStyle(
         color: Colors.black,
         fontSize: 28,
         fontWeight: FontWeight.bold,
@@ -53,173 +55,112 @@ class _TasksFormState extends State<TasksForm> {
     );
   }
 
+  // кнопка фильтра
   Widget _filter(BuildContext context) {
     return ElevatedButton.icon(
       style: ElevatedButton.styleFrom(
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
-      icon: Icon(Icons.filter_alt_outlined, color: Color(0xFF282828)),
+      icon: const Icon(Icons.filter_alt_outlined, color: Color(0xFF282828)),
       label: Text(
         LocaleKeys.tasks_screen_button_filter.tr(),
-        style: TextStyle(color: Color(0xFF282828)),
+        style: const TextStyle(color: Color(0xFF282828)),
       ),
-      onPressed: () {},
+      onPressed: () {
+        final current = context.read<TasksBloc>().state.filter;
+        final next = switch (current) {
+          TaskFilter.all => TaskFilter.open,
+          TaskFilter.open => TaskFilter.completed,
+          TaskFilter.completed => TaskFilter.all,
+        };
+        context.read<TasksBloc>().add(TasksEvent.setFilter(next));
+      },
     );
   }
 
+  // кнопка сортировки
   Widget _sort(BuildContext context) {
     return ElevatedButton.icon(
       style: ElevatedButton.styleFrom(
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
-      icon: Icon(Icons.sort_outlined, color: Color(0xFF282828)),
+      icon: const Icon(Icons.sort_outlined, color: Color(0xFF282828)),
       label: Text(
         LocaleKeys.tasks_screen_button_sort.tr(),
-        style: TextStyle(color: Color(0xFF282828)),
+        style: const TextStyle(color: Color(0xFF282828)),
       ),
-      onPressed: () {},
-    );
-  }
-
-  void _showAddTaskDialog(BuildContext context) {
-    final titleController = TextEditingController();
-    final descriptionController = TextEditingController();
-    final authorController = TextEditingController();
-
-    showDialog(
-      context: context,
-      builder: (dialogContext) {
-        return BlocProvider.value(
-          value: context.read<TasksBloc>(),
-          child: AlertDialog(
-            title: Text('New Task'),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                TextField(
-                  controller: titleController,
-                  decoration: InputDecoration(labelText: 'Title'),
-                ),
-                TextField(
-                  controller: descriptionController,
-                  decoration: InputDecoration(labelText: 'Description'),
-                ),
-                TextField(
-                  controller: authorController,
-                  decoration: InputDecoration(labelText: 'Author'),
-                ),
-              ],
-            ),
-            actions: [
-              TextButton(
-                child: Text('Cancel'),
-                onPressed: () => Navigator.pop(dialogContext),
-              ),
-              ElevatedButton(
-                child: Text('Save'),
-                onPressed: () {
-                  final task = Task(
-                    id: DateTime.now().millisecondsSinceEpoch.toString(),
-                    title: titleController.text,
-                    description: descriptionController.text,
-                    author: authorController.text,
-                    createdAt: DateTime.now(),
-                  );
-                  context.read<TasksBloc>().add(TasksEvent.addTask(task));
-                  Navigator.pop(dialogContext);
-                },
-              ),
-            ],
-          ),
-        );
+      onPressed: () {
+        final current = context.read<TasksBloc>().state.sort;
+        final newSort = current == TaskSort.byDateAsc ? TaskSort.byDateDesc : TaskSort.byDateAsc;
+        context.read<TasksBloc>().add(TasksEvent.setSort(newSort));
       },
     );
   }
 
+  // кнопка добавить задачу
   Widget _buttonNewTask(BuildContext context) {
     return ElevatedButton.icon(
       style: elevatedButtonTheme,
-      icon: Icon(Icons.add, color: Colors.white),
+      icon: const Icon(Icons.add, color: Colors.white),
       label: Text(
         LocaleKeys.tasks_screen_button_task.tr(),
-        style: TextStyle(color: Colors.white),
+        style: const TextStyle(color: Colors.white),
       ),
-      onPressed: () {
-        _showAddTaskDialog(context);
-      },
+      onPressed: () => showAddTaskDialog(context),
     );
   }
 
+  // Таб бар для переключения задач
   Widget _tabBar(BuildContext context) {
-    return TabBar(
+    return const TabBar(
       indicatorColor: Colors.black,
       unselectedLabelColor: Colors.grey,
       labelColor: Colors.black,
       tabs: [
-        Tab(text: LocaleKeys.tasks_screen_button_all.tr()),
-        Tab(text: LocaleKeys.tasks_screen_button_open.tr()),
-        Tab(text: LocaleKeys.tasks_screen_button_completed.tr()),
+        Tab(text: "All"),
+        Tab(text: "Open"),
+        Tab(text: "Completed"),
       ],
     );
   }
 
-  void _showTaskDetails(BuildContext context, Task task) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Text(task.title ?? 'Без названия'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text('Descripton: ${task.description}'),
-              SizedBox(height: 8),
-              Text('Author: ${task.author}'),
-              SizedBox(height: 8),
-              Text(
-                'Pubplished at: ${DateFormat('dd.MM.yyyy HH:mm').format(task.createdAt)} ',
-              ),
-            ],
+  // карточки задач
+  Widget _card(BuildContext context, List<Task> tasks) {
+    return ListView.builder(
+      itemCount: tasks.length,
+      itemBuilder: (context, index) {
+        final task = tasks[index];
+        return Card(
+          margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
           ),
-          actions: [
-            TextButton(
-              child: Text('Close'),
-              onPressed: () => Navigator.pop(context),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  Widget _card() {
-    return BlocBuilder<TasksBloc, TasksState>(
-      builder: (context, state) {
-        if (state.isLoading) {
-          return const Center(child: CircularProgressIndicator());
-        }
-        if (state.tasks.isEmpty) {
-          return const Text('No tasks yet');
-        }
-        return ListView.builder(
-          itemCount: state.tasks.length,
-          itemBuilder: (context, index) {
-            final task = state.tasks[index];
-            return Card(
-              margin: const EdgeInsets.all(8),
-              child: ListTile(
-                title: Text(task.title ?? 'No title'),
-                subtitle: Text(task.description),
-                trailing: Text(
-                  '${task.createdAt.hour}:${task.createdAt.minute}',
+          child: ListTile(
+            title: Text(task.title ?? "Без названия"),
+            subtitle: Text(task.description),
+            trailing: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                IconButton(
+                  icon: Icon(
+                    task.isCompleted ? Icons.check_box : Icons.check_box_outline_blank,
+                  ),
+                  onPressed: () {
+                    context.read<TasksBloc>().add(TasksEvent.toggleTaskCompletion(task.id));
+                  },
                 ),
-                onTap: () => _showTaskDetails(context, task),
-              ),
-            );
-          },
+                IconButton(
+                  icon: const Icon(Icons.delete, color: Colors.red),
+                  onPressed: () {
+                    context.read<TasksBloc>().add(TasksEvent.deleteTask(task.id));
+                  },
+                ),
+              ],
+            ),
+            onTap: () => showTaskDetails(context, task),
+          ),
         );
       },
     );
@@ -227,38 +168,47 @@ class _TasksFormState extends State<TasksForm> {
 
   Widget _tabContext(BuildContext context) {
     return Expanded(
-      child: TabBarView(
-        children: [
-          _card(),
-          Center(child: Text('Open Tasks')),
-          Center(child: Text('Completed Tasks')),
-        ],
+      child: BlocBuilder<TasksBloc, TasksState>(
+        builder: (context, state) {
+          // применяем фильтрацию и сортировку
+          final all = applyFilterAndSort(state, TaskFilter.all);
+          final open = applyFilterAndSort(state, TaskFilter.open);
+          final completed = applyFilterAndSort(state, TaskFilter.completed);
+
+          return TabBarView(
+            children: [
+              _card(context, all),
+              _card(context, open),
+              _card(context, completed),
+            ],
+          );
+        },
       ),
     );
   }
 
+  // TabBarView для отображения списка
   Widget _bodyPadding(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 25),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 25),
       child: DefaultTabController(
         length: 3,
         child: Column(
+          spacing: 20,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: 6),
             _todayTask(context),
-            SizedBox(height: 6),
             _dateStream(context),
-            SizedBox(height: 6),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              alignment: WrapAlignment.start,
               children: [
                 _filter(context),
                 _sort(context),
                 _buttonNewTask(context),
               ],
             ),
-            SizedBox(height: 12),
             _tabBar(context),
             _tabContext(context),
           ],
@@ -269,32 +219,45 @@ class _TasksFormState extends State<TasksForm> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: BlocProvider(
-        create: (_) => TasksBloc()..add(const TasksEvent.loadTasks()),
-        child: Builder(
-          builder:
-              (blocContext) => Scaffold(
-                appBar: AppBar(
-                  actions: [
-                    IconButton(
-                      icon: Icon(Icons.person),
-                      onPressed: () {
-                        context.router.navigate(ProfileRoute());
-                      },
-                    ),
-                  ],
-                  backgroundColor: Colors.black,
-                  title: Text(
-                    LocaleKeys.tasks_screen_title.tr(),
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
-                body: _bodyPadding(blocContext),
-              ),
+    return Scaffold(
+      appBar: AppBar(
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.person),
+            onPressed: () {
+              context.router.navigate(ProfileRoute());
+            },
+          ),
+        ],
+        backgroundColor: Colors.black,
+        title: Text(
+          LocaleKeys.tasks_screen_title.tr(),
+          style: const TextStyle(color: Colors.white),
         ),
       ),
+      body: _bodyPadding(context),
     );
   }
+}
+
+/// 🔹 вынес отдельную функцию для фильтрации/сортировки
+List<Task> applyFilterAndSort(TasksState state, TaskFilter filter) {
+  var tasks = List<Task>.from(state.tasks);
+
+  // сортировка
+  tasks.sort((a, b) {
+    switch (state.sort) {
+      case TaskSort.byDateAsc:
+        return a.createdAt.compareTo(b.createdAt);
+      case TaskSort.byDateDesc:
+        return b.createdAt.compareTo(a.createdAt);
+    }
+  });
+
+  // фильтр
+  return switch (filter) {
+    TaskFilter.all => tasks,
+    TaskFilter.open => tasks.where((t) => !t.isCompleted).toList(),
+    TaskFilter.completed => tasks.where((t) => t.isCompleted).toList(),
+  };
 }

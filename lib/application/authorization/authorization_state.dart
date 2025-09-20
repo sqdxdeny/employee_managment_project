@@ -14,7 +14,6 @@ class AuthorizationState with EquatableMixin {
   });
 
   factory AuthorizationState.initial(Profile profile) {
-    print('initial: ${profile.toString()}');
     return AuthorizationState(
       loginValidator: profile.login,
       passwordValidator: profile.password,
@@ -49,15 +48,14 @@ extension AuthorizationStateX on AuthorizationState {
   bool get validate {
     final loginValidator = this.loginValidator;
     final passwordValidator = this.passwordValidator;
-    print(
-      'IN VALIDATE: loginValidator $loginValidator, passwordValidator $passwordValidator',
-    );
     if (loginValidator == null || passwordValidator == null) return false;
     return true;
   }
 
   bool get enableNavigate {
-    print('validate: ${!validate}');
+    if(kDebugMode) {
+      debugPrint('validate: ${!validate}');
+    }
     if (!validate) return true;
     if (login != loginValidator || password != passwordValidator) return false;
     return true;

@@ -2,7 +2,7 @@
 
 // ignore_for_file: constant_identifier_names
 
-abstract class LocaleKeys {
+abstract class  LocaleKeys {
   static const authorization__title = 'authorization_.title';
   static const authorization__login_ = 'authorization_.login_';
   static const authorization__password_ = 'authorization_.password_';
@@ -25,4 +25,5 @@ abstract class LocaleKeys {
   static const profile_screen_title = 'profile_screen.title';
   static const profile_screen_button_save = 'profile_screen.button_save';
   static const profile_screen = 'profile_screen';
+
 }

@@ -7,7 +7,13 @@ sealed class TasksEvent {
 
   const factory TasksEvent.addTask(Task task) = _AddTask;
 
-  const factory TasksEvent.receiveTask(Task task) = _ReceiveTask;
+  const factory TasksEvent.deleteTask(String id) = _DeleteTask;
+
+  const factory TasksEvent.setFilter (TaskFilter filter) = _SetFilter;
+
+  const factory TasksEvent.setSort (TaskSort sort) = _SetSort;
+
+  const factory TasksEvent.toggleTaskCompletion(String id) = _ToggleTaskCompletion;
 }
 
 class _LoadTasks extends TasksEvent {
@@ -20,8 +26,22 @@ class _AddTask extends TasksEvent {
   const _AddTask(this.task);
 }
 
-class _ReceiveTask extends TasksEvent {
-  final Task task;
+class _DeleteTask extends TasksEvent {
+  final String id;
+  const _DeleteTask(this.id);
+}
 
-  const _ReceiveTask(this.task);
+class _SetFilter extends TasksEvent {
+  final TaskFilter filter;
+  const _SetFilter(this.filter);
+}
+
+class _SetSort extends TasksEvent {
+  final TaskSort sort;
+  const _SetSort(this.sort);
+}
+
+class _ToggleTaskCompletion extends TasksEvent {
+  final String id;
+  const _ToggleTaskCompletion(this.id);
 }

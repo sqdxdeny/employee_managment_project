@@ -15,7 +15,7 @@
 
   "tasks_screen" : {
     "title": "Tasks",
-    "main_title" : "Today\\'s Task",
+    "main_title" : "Today's Task",
     "button_task" : "New Task",
     "button_filter" : "Filter",
     "button_sort" : "Sort",

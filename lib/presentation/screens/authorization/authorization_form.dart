@@ -86,10 +86,10 @@ class AuthorizationForm extends StatelessWidget {
       child: Column(
         spacing: 20,
         children: [
-          _logo(context),
-          _loginBar(context),
-          _passwordBar(context),
-          _buttonContinue(),
+          Flexible(child: _logo(context)),
+          Flexible(child: _loginBar(context)),
+          Flexible(child: _passwordBar(context)),
+          Flexible(child: _buttonContinue()),
         ],
       ),
     );
