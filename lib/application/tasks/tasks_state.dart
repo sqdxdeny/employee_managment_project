@@ -5,12 +5,14 @@ class TasksState with EquatableMixin {
   final bool isLoading;
   final TaskFilter filter;
   final TaskSort sort;
+  final DateTime lastUpdated;
 
   const TasksState({
     required this.tasks,
     required this.isLoading,
     required this.filter,
     required this.sort,
+    required this.lastUpdated,
   });
 
   factory TasksState.initial() => TasksState(
@@ -18,6 +20,7 @@ class TasksState with EquatableMixin {
     isLoading: false,
     filter: TaskFilter.all,
     sort: TaskSort.byDateDesc,
+    lastUpdated: DateTime.now(),
   );
 
   TasksState copyWith({
@@ -25,12 +28,14 @@ class TasksState with EquatableMixin {
     bool? isLoading,
     TaskFilter? filter,
     TaskSort? sort,
+    DateTime? lastUpdated
   }) {
     return TasksState(
       tasks: tasks ?? this.tasks,
       isLoading: isLoading ?? this.isLoading,
       filter: filter ?? this.filter,
       sort: sort ?? this.sort,
+      lastUpdated: lastUpdated ?? DateTime.now(),
     );
   }
 
@@ -40,5 +45,6 @@ class TasksState with EquatableMixin {
     isLoading,
     filter,
     sort,
+    lastUpdated,
   ];
 }

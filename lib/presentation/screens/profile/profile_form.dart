@@ -138,7 +138,7 @@ class _ProfileEditorFormState extends State<ProfileEditorForm> {
         bloc.add(ProfileWatcherEvent.signOut());
         context.router.replaceAll([AuthorizationRoute()]);
       },
-      icon: Icon(Icons.add, color: Color(0xFFC0C0C0)),
+      icon: Icon(Icons.exit_to_app_outlined, color: Color(0xFFC0C0C0),),
     );
   }
 

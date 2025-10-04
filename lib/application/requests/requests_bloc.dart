@@ -8,7 +8,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:uuid/v1.dart';
 
 part 'requests_event.dart';
-
 part 'requests_state.dart';
 
 class RequestsBloc extends Bloc<RequestsEvent, RequestsState> {

@@ -13,25 +13,9 @@ class _TasksFormState extends State<TasksForm> {
   @override
   void initState() {
     super.initState();
-    Timer.periodic(const Duration(seconds: 1), (timer) async {
-      final now = DateTime.now();
-      final DateTime streamData;
-      try {
-        streamData = await _dateStreamController.stream.last;
-      } catch(_){
-        _dateStreamController.sink.add(now);
-        return;
-      }
-      if(now.day > streamData.day || now.month > streamData.month || now.year > streamData.year) {
-        _dateStreamController.sink.add(now);
-      }
+    Timer.periodic(const Duration(days: 1), (timer) {
+      _dateStreamController.sink.add(DateTime.now());
     });
-  }
-
-  @override
-  void dispose() {
-    _dateStreamController.close();
-    super.dispose();
   }
 
   // вывод текущей даты
@@ -105,6 +89,64 @@ class _TasksFormState extends State<TasksForm> {
     );
   }
 
+  // Окно добавления новой задачи
+  void _showAddTaskDialog(BuildContext context) {
+    final titleController = TextEditingController();
+    final descriptionController = TextEditingController();
+    final authorController = TextEditingController();
+
+    showDialog(
+      context: context,
+      builder: (dialogContext) {
+        return BlocProvider.value(
+          value: context.read<TasksBloc>(),
+          child: AlertDialog(
+            title: const Text('New Task'),
+            content: Column(
+              spacing: 20,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextField(
+                  controller: titleController,
+                  decoration: const InputDecoration(labelText: 'Title'),
+                ),
+                TextField(
+                  controller: descriptionController,
+                  decoration: const InputDecoration(labelText: 'Description'),
+                ),
+                TextField(
+                  controller: authorController,
+                  decoration: const InputDecoration(labelText: 'Author'),
+                ),
+              ],
+            ),
+            actions: [
+              TextButton(
+                child: const Text('Cancel'),
+                onPressed: () => Navigator.pop(dialogContext),
+              ),
+              ElevatedButton(
+                child: const Text('Save'),
+                onPressed: () {
+                  final task = Task(
+                    id: DateTime.now().millisecondsSinceEpoch.toString(),
+                    title: titleController.text,
+                    description: descriptionController.text,
+                    author: authorController.text,
+                    createdAt: DateTime.now(),
+                    isCompleted: false, // ✅ всегда новая — незавершенная
+                  );
+                  context.read<TasksBloc>().add(TasksEvent.addTask(task));
+                  Navigator.pop(dialogContext);
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   // кнопка добавить задачу
   Widget _buttonNewTask(BuildContext context) {
     return ElevatedButton.icon(
@@ -114,7 +156,7 @@ class _TasksFormState extends State<TasksForm> {
         LocaleKeys.tasks_screen_button_task.tr(),
         style: const TextStyle(color: Colors.white),
       ),
-      onPressed: () => showAddTaskDialog(context),
+      onPressed: () => _showAddTaskDialog(context),
     );
   }
 
@@ -165,10 +207,38 @@ class _TasksFormState extends State<TasksForm> {
                 ),
               ],
             ),
-            onTap: () => showTaskDetails(context, task),
+            onTap: () => _showTaskDetails(context, task),
           ),
         );
       },
+    );
+  }
+
+  // детали задачи
+  void _showTaskDetails(BuildContext context, Task task) {
+    showDialog(
+      context: context,
+      builder:
+          (_) => AlertDialog(
+            title: Text(task.title ?? "Без названия"),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text("Описание: ${task.description}"),
+                const SizedBox(height: 8),
+                Text("Автор: ${task.author}"),
+                const SizedBox(height: 8),
+                Text("Создано: ${DateFormat('dd.MM.yyyy HH:mm').format(task.createdAt)}"),
+              ],
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text("Закрыть"),
+              ),
+            ],
+          ),
     );
   }
 
@@ -229,7 +299,7 @@ class _TasksFormState extends State<TasksForm> {
       appBar: AppBar(
         actions: [
           IconButton(
-            icon: const Icon(Icons.person),
+            icon: const Icon(Icons.person, color: Color(0xFFC0C0C0)),
             onPressed: () {
               context.router.navigate(ProfileRoute());
             },
@@ -238,7 +308,9 @@ class _TasksFormState extends State<TasksForm> {
         backgroundColor: Colors.black,
         title: Text(
           LocaleKeys.tasks_screen_title.tr(),
-          style: const TextStyle(color: Colors.white),
+          style: const TextStyle(color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
         ),
       ),
       body: _bodyPadding(context),

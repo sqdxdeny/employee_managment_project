@@ -3,13 +3,13 @@ part of 'requests_screen.dart';
 class RequestsForm extends StatelessWidget {
   const RequestsForm({super.key});
 
-  Widget get _addRequest {
+
+  Widget _profileButton(BuildContext context) {
     return IconButton(
+      icon: const Icon(Icons.person, color: Color(0xFFC0C0C0)),
       onPressed: () {
-        /// TODO:
+        context.router.navigate(ProfileRoute());
       },
-      icon: Icon(Icons.add),
-      tooltip: 'Add request',
     );
   }
 
@@ -25,7 +25,7 @@ class RequestsForm extends StatelessWidget {
         ),
       ),
       actions: [
-        _addRequest,
+        _profileButton(context),
       ],
     );
   }
@@ -109,7 +109,6 @@ class _RequestCard extends StatelessWidget {
                     ),
                   ),
                 ),
-                AccountWidget(image: Icon(Icons.account_circle_outlined), name: request.recipientId.generate()),
               ],
             ),
           ),
