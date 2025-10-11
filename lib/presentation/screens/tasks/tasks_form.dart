@@ -162,14 +162,14 @@ class _TasksFormState extends State<TasksForm> {
 
   // Таб бар для переключения задач
   Widget _tabBar(BuildContext context) {
-    return const TabBar(
+    return TabBar(
       indicatorColor: Colors.black,
       unselectedLabelColor: Colors.grey,
       labelColor: Colors.black,
       tabs: [
-        Tab(text: "All"),
-        Tab(text: "Open"),
-        Tab(text: "Completed"),
+        Tab(text: LocaleKeys.tasks_screen_button_all.tr()),
+        Tab(text: LocaleKeys.tasks_screen_button_open.tr()),
+        Tab(text: LocaleKeys.tasks_screen_button_completed.tr()),
       ],
     );
   }

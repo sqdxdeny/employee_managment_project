@@ -10,7 +10,15 @@
   },
 
   "home_screen" : {
-   "title" : "Home"
+   "title" : "Home",
+    "greeting" : "Hello,",
+    "greeting_noname" : "Hello, Guest!",
+    "no_data" : "There's no data to display!",
+    "requests" : "Requests",
+    "tasks" : "Tasks",
+    "tasks_in_progress" : "Tasks in progress",
+    "tasks_completed" : "Tasks completed"
+
   },
 
   "tasks_screen" : {
@@ -25,7 +33,8 @@
   },
 
   "requests_screen" : {
-    "title" : "Requests"
+    "title" : "Requests",
+    "no_requests" : "There aren't any requests yet!"
   },
 
   "profile_screen" : {

@@ -9,7 +9,14 @@
   },
 
   "home_screen" : {
-    "title" : "Главная"
+    "title" : "Главная",
+    "greeting" : "Привет,",
+    "greeting_noname" : "Привет, Гость!",
+    "no_data" : "Нет данных для отображения!",
+    "requests" : "Запросы",
+    "tasks" : "Задачи",
+    "tasks_in_progress" : "Задачи в процессе",
+    "tasks_completed" : "Завершенные задачи"
   },
 
   "tasks_screen" : {
@@ -24,7 +31,8 @@
   },
 
   "requests_screen" : {
-    "title" : "Заявки"
+    "title" : "Заявки",
+    "no_requests" : "Пока никаких запросов нет!"
   },
 
   "profile_screen" : {

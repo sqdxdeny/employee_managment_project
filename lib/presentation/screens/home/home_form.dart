@@ -21,8 +21,8 @@ class _HomeFormState extends State<HomeForm> {
       builder: (context, login) {
         final safeLogin = login ?? ''; //
         if (safeLogin.isEmpty || isNumeric(safeLogin)) {
-          return const Text(
-            'Привет, Гость! 👋',
+          return Text(
+            LocaleKeys.home_screen_greeting_noname.tr(),
             style: TextStyle(
               color: Colors.black,
               fontSize: 28,
@@ -31,7 +31,7 @@ class _HomeFormState extends State<HomeForm> {
           );
         }
         return Text(
-          'Привет, $safeLogin! 👋',
+          '${LocaleKeys.home_screen_greeting.tr()} $login',
           style: TextStyle(
             color: Colors.black,
             fontSize: 28,
@@ -52,9 +52,9 @@ class _HomeFormState extends State<HomeForm> {
             final pending = totalTasks - completedTasks;
             final totalRequests = requestState.requests.length;
             if (totalTasks == 0 && totalRequests == 0) {
-              return const Center(
+              return Center(
                 child: Text(
-                  'Нет данных для отображения 📊',
+                  LocaleKeys.home_screen_no_data.tr(),
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w500,
@@ -122,17 +122,17 @@ class _HomeFormState extends State<HomeForm> {
       children: <Widget>[
         Indicator(
           color: CircularColors.requestsColor,
-          text: 'Requests',
+          text: LocaleKeys.home_screen_requests.tr(),
           isSquare: true,
         ),
         Indicator(
           color: CircularColors.tasksColorNotCompleted,
-          text: 'Tasks in progress',
+          text: LocaleKeys.home_screen_tasks_in_progress.tr(),
           isSquare: true,
         ),
         Indicator(
           color: CircularColors.tasksColorCompleted,
-          text: 'Tasks Completed',
+          text: LocaleKeys.home_screen_tasks_in_progress.tr(),
           isSquare: true,
         ),
       ],
@@ -157,25 +157,6 @@ class _HomeFormState extends State<HomeForm> {
               child: ListTile(
                 title: Text(task.title ?? "Без названия"),
                 subtitle: Text(task.description),
-                trailing: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    IconButton(
-                      icon: Icon(
-                        task.isCompleted ? Icons.check_box : Icons.check_box_outline_blank,
-                      ),
-                      onPressed: () {
-                        context.read<TasksBloc>().add(TasksEvent.toggleTaskCompletion(task.id));
-                      },
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.delete, color: Colors.red),
-                      onPressed: () {
-                        context.read<TasksBloc>().add(TasksEvent.deleteTask(task.id));
-                      },
-                    ),
-                  ],
-                ),
                 onTap: () {
                   context.router.push(TasksRoute());
                 },
@@ -190,7 +171,7 @@ class _HomeFormState extends State<HomeForm> {
   Widget get _textTasks {
     return Center(
       child: Text(
-        'Tasks',
+        LocaleKeys.home_screen_tasks.tr(),
         style: TextStyle(
           color: Colors.black,
           fontSize: 16,
@@ -203,7 +184,7 @@ class _HomeFormState extends State<HomeForm> {
   Widget get _textRequests {
     return Center(
       child: Text(
-        'Requests',
+        LocaleKeys.home_screen_requests.tr(),
         style: TextStyle(
           color: Colors.black,
           fontSize: 16,
@@ -232,17 +213,6 @@ class _HomeFormState extends State<HomeForm> {
               child: ListTile(
                 title: Text(request.title),
                 subtitle: Text(request.description),
-                trailing: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    IconButton(
-                      icon: const Icon(Icons.delete, color: Colors.red),
-                      onPressed: () {
-                        context.read<RequestsBloc>().add(RequestsEvent.deleteRequest(request.id));
-                      },
-                    ),
-                  ],
-                ),
                 onTap: () {
                   context.router.push(RequestsRoute());
                 },
@@ -297,7 +267,9 @@ class _HomeFormState extends State<HomeForm> {
         leading: null,
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              context.router.navigate(ProfileRoute());
+            },
             icon: Icon(Icons.person, color: Color(0xFFC0C0C0)),
           ),
         ],

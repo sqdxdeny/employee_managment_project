@@ -45,7 +45,7 @@ class RequestsForm extends StatelessWidget {
         if (requests.isEmpty) {
           return Center(
             child: Text(
-              'There aren\'t any requests yet!',
+              LocaleKeys.requests_screen_no_requests.tr(),
               style: Theme.of(context).textTheme.headlineLarge,
             ),
           );
